@@ -150,6 +150,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 For questions or feedback:
-- GitHub: [@your-username](https://github.com/your-username)
-- Email: [your.email@example.com](mailto:your.email@example.com)
-```
+- GitHub: https://github.com/MohitPunglia
