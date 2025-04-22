@@ -1,6 +1,3 @@
-Here’s the **README.md** content ready for copy-pasting. Replace `your-username`, `your.email@example.com`, and API key placeholders with your details:
-
-```markdown
 # LangChain Practice Repository 🦜️🔗
 
 A hands-on collection of Python scripts and modules to explore LangChain components like chat models, prompt templates, embeddings, and agents. Ideal for learning LangChain workflows and LLM integration!
