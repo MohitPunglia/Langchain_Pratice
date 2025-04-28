@@ -51,3 +51,14 @@ Ensure the summary is clear, accurate, and aligned with the provided style and l
     input_variables=["paper_input", "style_input", "length_input"],
     validate_template=True,
 )
+
+if st.button("Generate Explanation"):
+    chain = template | model
+    result = chain.invoke(
+        {
+            "paper_input": paper_input,
+            "style_input": style_input,
+            "length_input": length_input,
+        }
+    )
+    st.write(result.content)
