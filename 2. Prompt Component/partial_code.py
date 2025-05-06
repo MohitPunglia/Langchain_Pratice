@@ -51,3 +51,19 @@ prompt = template.invoke(
 if st.button("Generate Explanation"):
     result = model.invoke(prompt)
     st.write(result.content)
+
+    
+template = load_prompt("prompt_template.json")
+
+
+prompt = template.invoke(
+    {
+        "paper_input": paper_input,
+        "style_input": style_input,
+        "length_input": length_input,
+    }
+)
+
+if st.button("Generate Explanation"):
+    result = model.invoke(prompt)
+    st.write(result.content)
