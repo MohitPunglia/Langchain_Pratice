@@ -25,3 +25,26 @@ class Review(BaseModel):
         default=None, description="Write down all the cons inside a list"
     )
     name: Optional[str] = Field(default=None, description="Name of the reviewer")
+
+
+# Create JSON parser
+parser = JsonOutputParser(pydantic_object=Review)
+
+# Build prompt template
+template = """<|system|>
+Analyze this product review and format your response as JSON with the following structure:
+{format_instructions}
+
+Follow these rules:
+1. Always return valid JSON
+2. Use double quotes for strings
+3. Don't include markdown formatting</s>
+<|user|>
+{input}
+</s>
+<|assistant|>
+"""
+
+prompt = ChatPromptTemplate.from_template(template).partial(
+    format_instructions=parser.get_format_instructions()
+)
