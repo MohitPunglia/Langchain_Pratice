@@ -48,3 +48,24 @@ Follow these rules:
 prompt = ChatPromptTemplate.from_template(template).partial(
     format_instructions=parser.get_format_instructions()
 )
+# Initialize model without structured output
+llm = HuggingFaceEndpoint(
+    repo_id="HuggingFaceH4/zephyr-7b-beta",
+    task="text-generation",
+    max_new_tokens=512,
+    temperature=0.1,
+)
+
+# Create chain
+chain = prompt | llm | parser
+
+# Run analysis
+result = chain.invoke(
+    {
+        "input": """I recently upgraded to the Samsung Galaxy S24 Ultra... (your review text here)"""
+    }
+)
+
+# Convert to Pydantic model
+review = Review(**result)
+print(review)
