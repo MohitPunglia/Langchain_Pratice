@@ -4,6 +4,7 @@ langchain-core
 
 # OpenAI Integration
 langchain-openai
+langchain-groq
 openai
 
 # Anthropic Integration
