@@ -5,7 +5,9 @@ from langchain_core.output_parsers import JsonOutputParser
 
 load_dotenv()
 
-llm = HuggingFaceEndpoint(repo_id="google/gemma-2-2b-it", task="text-generation")
+llm = HuggingFaceEndpoint(
+    repo_id="HuggingFaceH4/zephyr-7b-beta", task="text-generation"
+)
 
 model = ChatHuggingFace(llm=llm)
 
