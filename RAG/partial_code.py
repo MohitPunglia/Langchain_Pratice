@@ -31,3 +31,27 @@ except TranscriptsDisabled:
     print("No captions available for this video.")
 
 transcript_list
+
+"""## Step 1b - Indexing (Text Splitting)"""
+
+splitter=RecursiveCharacterTextSplitter(
+    chunk_size=1000,chunk_overlap=250
+)
+
+chunks=splitter.create_documents([transcript])
+
+len(chunks)
+
+chunks[79]
+
+"""# Step 1c & 1d - Indexing (Embedding Generation and Storing in Vector Store)"""
+
+# Initialize open-source embeddings
+embeddings=HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+vector_store = FAISS.from_documents(chunks, embeddings)
+
+vector_store.index_to_docstore_id
+
+vector_store.get_by_ids(['c1241e51-a9f5-41fb-9c44-3771f53be391'])
