@@ -55,3 +55,29 @@ vector_store = FAISS.from_documents(chunks, embeddings)
 vector_store.index_to_docstore_id
 
 vector_store.get_by_ids(['c1241e51-a9f5-41fb-9c44-3771f53be391'])
+
+"""##Step 2 - Retrieval"""
+
+retriever=vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 4})
+
+retriever.invoke('What is deepmind')
+
+"""##Step 3 - Augmentation"""
+
+llm=ChatGroq(model_name='llama3-70b-8192',api_key=userdata.get('GROQ_API_KEY'))
+
+prompt = PromptTemplate(
+    template="""
+      You are a helpful assistant.
+      Answer ONLY from the provided transcript context.
+      If the context is insufficient, just say you don't know.
+
+      {context}
+      Question: {question}
+    """,
+    input_variables = ['context', 'question']
+)
+
+question          = "is the topic of nuclear fusion discussed in this video? if yes then what was discussed"
+retrieved_docs    = retriever.invoke(question)
+retrieved_docs
