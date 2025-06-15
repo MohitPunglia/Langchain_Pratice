@@ -81,3 +81,36 @@ prompt = PromptTemplate(
 question          = "is the topic of nuclear fusion discussed in this video? if yes then what was discussed"
 retrieved_docs    = retriever.invoke(question)
 retrieved_docs
+
+ontext_text = "\n\n".join(doc.page_content for doc in retrieved_docs)
+context_text
+
+final_prompt = prompt.invoke({"context": context_text, "question": question})
+final_prompt
+
+"""##Step 4 - Generation"""
+
+answer = llm.invoke(final_prompt)
+print(answer.content)
+
+"""## Generate Chain"""
+
+from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
+from langchain_core.output_parsers import StrOutputParser
+
+def format_docs(retrieved_docs):
+  context_text = "\n\n".join(doc.page_content for doc in retrieved_docs)
+  return context_text
+
+parallel_chain = RunnableParallel({
+    'context': retriever | RunnableLambda(format_docs),
+    'question': RunnablePassthrough()
+})
+
+parallel_chain.invoke('who is Demis')
+
+parser = StrOutputParser()
+
+main_chain = parallel_chain | prompt | llm | parser
+
+main_chain.invoke('Can you summarize the video')
