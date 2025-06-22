@@ -63,3 +63,35 @@ vector_store.similarity_search(query,k=2)
 
 # %% [markdown]
 # # MMR Maximum Marginal Relevance Code Example
+
+ %%
+# Sample documents
+docs = [
+    Document(page_content="LangChain makes it easy to work with LLMs."),
+    Document(page_content="LangChain is used to build LLM based applications."),
+    Document(page_content="Chroma is used to store and search document embeddings."),
+    Document(page_content="Embeddings are vector representations of text."),
+    Document(page_content="MMR helps you get diverse results when doing similarity search."),
+    Document(page_content="LangChain supports Chroma, FAISS, Pinecone, and more."),
+]
+
+# %%
+# Initialize open-source embeddings
+embedding_function=HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+
+vector_store=Chroma.from_documents(
+    documents=documents,
+    embedding=embedding_function
+)
+
+
+# %%
+retriever=vector_store.as_retriever(
+    search_type='mmr'
+)
+
+# %%
+query='What is langchain'
+retriever.invoke(query)
