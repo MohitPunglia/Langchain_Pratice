@@ -127,3 +127,36 @@ vector_store=Chroma.from_documents(
 
 # %%
 similarity_retriever=vector_store.as_retriever(search_type='similarity',search_kwargs={'k':5})
+
+# %%
+from langchain.retrievers.multi_query import MultiQueryRetriever
+
+# %%
+!pip install langchain-groq
+from langchain_groq import ChatGroq
+from google.colab import userdata
+
+multiquery_retriever=MultiQueryRetriever.from_llm(
+    retriever=vector_store.as_retriever(search_kwargs={'k':5}),
+    llm=ChatGroq(model_name='llama3-70b-8192',api_key=userdata.get('GROQ_API_KEY'))
+)
+
+# %%
+# Query
+query = "How to improve energy levels and maintain balance?"
+
+# %%
+# Retrieve results
+similarity_results = similarity_retriever.invoke(query)
+multiquery_results= multiquery_retriever.invoke(query)
+
+# %%
+for i, doc in enumerate(similarity_results):
+    print(f"\n--- Result {i+1} ---")
+    print(doc.page_content)
+
+print("*"*150)
+
+for i, doc in enumerate(multiquery_results):
+    print(f"\n--- Result {i+1} ---")
+    print(doc.page_content)
