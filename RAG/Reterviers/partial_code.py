@@ -201,3 +201,36 @@ docs = [
 embedding_function=HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
+
+vector_store=Chroma.from_documents(
+    documents=all_docs,
+    embedding=embedding_function
+)
+
+# %%
+base_retriever = vector_store.as_retriever(search_kwargs={"k": 5})
+
+# %%
+llm=ChatGroq(model_name='llama3-70b-8192',api_key=userdata.get('GROQ_API_KEY'))
+compressor=LLMChainExtractor.from_llm(llm)
+
+# %%
+# Create the contextual compression retriever
+compression_retriever = ContextualCompressionRetriever(
+    base_retriever=base_retriever,
+    base_compressor=compressor
+)
+
+# %%
+# Query the retriever
+query = "What is photosynthesis?"
+compressed_results = compression_retriever.invoke(query)
+
+# %%
+for i, doc in enumerate(compressed_results):
+    print(f"\n--- Result {i+1} ---")
+    print(doc.page_content)
+
+
+# %%
+
