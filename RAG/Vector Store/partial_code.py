@@ -37,3 +37,23 @@ from langchain.embeddings import HuggingFaceEmbeddings
 embedding_function=HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
+
+# %%
+vector_store=Chroma(
+    embedding_function=embedding_function,
+    persist_directory='Chroma_DB',
+    collection_name='Test'
+)
+
+# %%
+vector_store.add_documents(docs)
+
+# %%
+#To retrive all the fields from our vector store
+vector_store.get()
+
+# %%
+#Searching documents from vector store
+vector_store.similarity_search(
+    query='Who is bastmen'
+)
