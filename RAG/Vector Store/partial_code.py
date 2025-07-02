@@ -57,3 +57,21 @@ vector_store.get()
 vector_store.similarity_search(
     query='Who is bastmen'
 )
+
+ %%
+vector_store.similarity_search_with_relevance_scores(
+     query='Who among these are a bowler?',
+    k=5
+)
+
+# %%
+#Update the document
+updated_doc1 = Document(
+    page_content="Updated_document Virat Kohli is one of the most successful and consistent batsmen in IPL history. Known for his aggressive batting style and fitness, he has led the Royal Challengers Bangalore in multiple seasons.",
+    metadata={"team": "Royal Challengers Bangalore"}
+)
+
+vector_store.update_document(document_id='78468b85-e08a-4b29-9bd1-5b9fd315fa6b',document=updated_doc1)
+
+# %%
+vector_store.get()
